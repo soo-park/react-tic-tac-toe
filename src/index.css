@@ -1,0 +1,59 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+    height: ($size-sm + $spacing*2)*3;
+    overflow: hidden;
+    margin: 50px auto 30px auto;
+    position: relative;
+    width: ($size-sm + $spacing*2)*3;
+    background-color: #ddd;
+    color: grey;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+button {
+    width: 50px;
+    height: 50px;
+    background: #fff;
+    border: 4px solid #ddd;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    margin: 0px;
+    font-size: 30px;
+    color: #ee9876;
+}
+
+.place:hover {
+    background-color: #ggg;
+}
+
+td {
+    margin: 0px;
+    padding: 0px;
+}
+
+div {
+    text-align: center;
+}
+
+input {
+    font-size: 20px;
+    color: grey;
+    border: 2px solid grey;
+}
+
+.wrapper, table {
+    margin: 20px auto;
+}
+
+#winner {
+    font-size: 20px;
+    color: #a61e1c;
+    margin: 5px;
+    padding: 5px;
+}
