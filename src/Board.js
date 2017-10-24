@@ -1,23 +1,24 @@
 import React from 'react';
+import BoardRow from './BoardRow.js';
 
 const Board = (props) => {
   return (
     <table>
       <tbody>
         <tr>
-          <td><button className="place" id="c00" onClick={props.onClick}></button></td>
-          <td><button className="place" id="c01" onClick={props.onClick}></button></td>
-          <td><button className="place" id="c02" onClick={props.onClick}></button></td>
+          <BoardRow row={0} col={0} onClick={props.onClick} marking={props.board[0][0]}/>
+          <BoardRow row={0} col={1} onClick={props.onClick} marking={props.board[0][1]}/>
+          <BoardRow row={0} col={2} onClick={props.onClick} marking={props.board[0][2]}/>
         </tr>
         <tr>
-          <td><button className="place" id="c10" onClick={props.onClick}></button></td>
-          <td><button className="place" id="c11" onClick={props.onClick}></button></td>
-          <td><button className="place" id="c12" onClick={props.onClick}></button></td>
+          <BoardRow row={1} col={0} onClick={props.onClick} marking={props.board[1][0]}/>
+          <BoardRow row={1} col={1} onClick={props.onClick} marking={props.board[1][1]}/>
+          <BoardRow row={1} col={2} onClick={props.onClick} marking={props.board[1][2]}/>
         </tr>
         <tr>
-          <td><button className="place" id="c20" onClick={props.onClick}></button></td>
-          <td><button className="place" id="c21" onClick={props.onClick}></button></td>
-          <td><button className="place" id="c22" onClick={props.onClick}></button></td>
+          <BoardRow row={2} col={0} onClick={props.onClick} marking={props.board[2][0]}/>
+          <BoardRow row={2} col={1} onClick={props.onClick} marking={props.board[2][1]}/>
+          <BoardRow row={2} col={2} onClick={props.onClick} marking={props.board[2][2]}/>
         </tr>
       </tbody>
     </table>
