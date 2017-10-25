@@ -11,7 +11,7 @@ class App extends Component {
         [null, null, null],
         [null, null, null]
       ],
-      myMove: true,
+      myMove: false,
       numNodes: 0,
       winner: ""
     }
@@ -28,7 +28,7 @@ class App extends Component {
 
     if (getWinner(this.state.board) === null) {
       if (board[row][col] === null) {
-        this.state.myMove ? board[row][col] = true : board[row][col] = false
+        this.state.myMove ? board[row][col] = false : board[row][col] = true
         this.setState({
           board: board,
           myMove: !this.state.myMove,
@@ -42,13 +42,12 @@ class App extends Component {
   }
 
   checkWinner() {
-    // refactor to switch statement if(winner !== null)
     if (getWinner(this.state.board) === null) {
       return null;
     } else if (getWinner(this.state.board) === 0){
-      return "AI won";
-    } else if (getWinner(this.state.board) === 1) {
       return "You won";
+    } else if (getWinner(this.state.board) === 1) {
+      return "AI won";
     } else if (getWinner(this.state.board) === -1){
       return "Game ended tie";
     } else {
@@ -102,20 +101,24 @@ class App extends Component {
   computerMakeMove(board, player = false) {
     let winner = this.checkWinner();
     if (winner === null) {
-      let scores = [];
-      let moves = [];
-
+      var nextVal = null;
+      var nextBoard = null;
       for (var i = 0; i < 3; i++) {
         for (var j = 0; j < 3; j++) {
           if (board[i][j] === null) {
             board[i][j] = player;
+            var value = this.computerMakeMove(board, !player)[0];
+            if ((player && (nextVal === null || value > nextVal)) || (!player && (nextVal === null || value < nextVal))) {
+              nextBoard = board.map(function(arr) {
+                  return arr.slice();
+              });
+              nextVal = value;
+            }
+            board[i][j] = null;
           }
         }
       }
-
-      if (moves.length < 10) {
-        console.log(scores, moves, this.state.board);
-      }
+      return [nextVal, nextBoard];
     }
   }
   
