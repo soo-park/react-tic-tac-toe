@@ -19,7 +19,6 @@ class App extends Component {
     this.restartGame = this.restartGame.bind(this);
   }
 
-
   cellClick(event) {
     event.preventDefault();
     let board = this.state.board;
@@ -38,24 +37,22 @@ class App extends Component {
       } else {
         alert("Click an empty cell");
       }
-    } else {
-      this.checkWinner();
-      this.forceUpdate();
     }
-
-    this.computerMakeMove(this.state.board);
+    this.setBoard();
   }
 
   checkWinner() {
     // refactor to switch statement if(winner !== null)
-    if (getWinner(this.state.board) !== null){
-      this.setState({winner: "AI won"});
+    if (getWinner(this.state.board) === null) {
+      return null;
+    } else if (getWinner(this.state.board) === 0){
+      return "AI won";
     } else if (getWinner(this.state.board) === 1) {
-      this.setState({winner: "You won"});
+      return "You won";
     } else if (getWinner(this.state.board) === -1){
-      this.setState({winner: "Game ended tie"});
+      return "Game ended tie";
     } else {
-      this.setState({winner: "Error"});
+      return "Error";
     }
   }
 
@@ -76,42 +73,53 @@ class App extends Component {
     this.restartGame();
   }
 
-  computerMakeMove(board) {
-    var numNodes = this.state.numNodes;
-    var player = this.state.myMove ? 1: 0;
-    numNodes++;
-    
-    var winner = this.checkWinner(board);
-    if (winner !== null) {
-      var nextVal = null;
-      var nextBoard = null;
-    
+  setBoard() {
+    this.setState({
+      winner: this.checkWinner()
+    });
+    this.boardAfterComputerPlay();
+  }
+
+  boardAfterComputerPlay() {
+    this.setState({numNodes: 0});
+    let board = this.cloneBoard(this.state.board);
+    this.computerMakeMove(board);
+  }
+
+  cloneBoard (existingArray) {
+    var newBoard = [];
+    for (var i = 0; i < 3; i++) {
+      var newLine = [];
+      for (var j = 0; j < 3; j++) {
+        newLine.push(j);
+      }
+      newBoard.push(newLine);
+    }
+    return newBoard;
+  }
+
+  // use minmax algorighm to build the perfect AI
+  computerMakeMove(board, player = false) {
+    let winner = this.checkWinner();
+    if (winner === null) {
+      let scores = [];
+      let moves = [];
+
       for (var i = 0; i < 3; i++) {
         for (var j = 0; j < 3; j++) {
           if (board[i][j] === null) {
             board[i][j] = player;
-            var value = this.computerMakeMove(board, !player)[0];
-            if ((player && (nextVal === null || value > nextVal)) || 
-                (!player && (nextVal === null || value < nextVal))) {
-              nextBoard = board.map(function(arr) {
-                  return arr.slice();
-              });
-              nextVal = value;
-            }
-            board[i][j] = null;
           }
         }
       }
-      this.setState({
-        numNodes: numNodes,
-        myMove: !this.state.myMove
-      });
+
+      if (moves.length < 10) {
+        console.log(scores, moves, this.state.board);
+      }
     }
-    return [nextVal, nextBoard];
   }
   
   render() {
-    
     return (
       <div>
         <div className="wrapper">

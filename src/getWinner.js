@@ -5,7 +5,6 @@ export default function getWinner(board) {
   for (var k = 0; k < vals.length; k++) {
       var value = vals[k];
       
-      // Check rows, columns, and diagonals
       var diagonalComplete1 = true;
       var diagonalComplete2 = true;
       for (var i = 0; i < 3; i++) {
