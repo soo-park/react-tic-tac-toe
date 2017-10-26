@@ -5,18 +5,28 @@ import getWinner from './getWinner.js';
 class App extends Component {
   constructor(props) {
     super(props);
+    var numRows = 5; // later on a user input
     this.state = {
-      board: [
-        [null, null, null],
-        [null, null, null],
-        [null, null, null]
-      ],
+      board: this.emptyBoard(numRows),
+      numRows: numRows, 
       myMove: false,
       numNodes: 0,
       winner: ""
     }
     this.cellClick = this.cellClick.bind(this);
     this.restartGame = this.restartGame.bind(this);
+  }
+
+  emptyBoard(numRows) {
+    var board = [];
+    for (let i = 0; i < numRows; i++) {
+      var row = [];
+      for (let j = 0; j < numRows; j++) {     
+        row.push(null);
+      }
+      board.push(row);
+    }
+    return board;
   }
 
   cellClick(event) {
@@ -57,11 +67,7 @@ class App extends Component {
 
   restartGame() {
     this.setState({
-      board: [
-        [null, null, null],
-        [null, null, null],
-        [null, null, null]
-      ],
+      board: this.emptyBoard(this.state.numRows),
       myMove: true,
       numNodes: 0,
       winner: ""
@@ -86,10 +92,11 @@ class App extends Component {
   }
 
   cloneBoard (existingArray) {
+    var numRows = existingArray.length;
     var newBoard = [];
-    for (var i = 0; i < 3; i++) {
+    for (var i = 0; i < numRows; i++) {
       var newLine = [];
-      for (var j = 0; j < 3; j++) {
+      for (var j = 0; j < numRows; j++) {
         newLine.push(j);
       }
       newBoard.push(newLine);
@@ -98,13 +105,32 @@ class App extends Component {
   }
 
   // use minmax algorighm to build the perfect AI
-  computerMakeMove(board, player = false) {
-    let winner = this.checkWinner();
-    if (winner === null) {
-      var nextVal = null;
-      var nextBoard = null;
-      for (var i = 0; i < 3; i++) {
-        for (var j = 0; j < 3; j++) {
+  // AI win is +1 person win is -1
+  computerMakeMove(board, player = true) {
+    var numRows = board.length;
+    this.setState({numNodes: this.state.numNodes++});
+    var winner = this.checkWinner();
+    if (winner !== null) {
+      switch(winner) {
+        case 1:
+          // AI wins
+          return [1, board]
+        case 0:
+          // opponent wins
+          return [-1, board]
+        case -1:
+          // Tie
+          return [0, board];
+        default:
+          return [0, board];
+      }
+    } else {
+        // Next states
+        var nextVal = null;
+        var nextBoard = null;
+        
+      for (var i = 0; i < numRows; i++) {
+        for (var j = 0; j < numRows; j++) {
           if (board[i][j] === null) {
             board[i][j] = player;
             var value = this.computerMakeMove(board, !player)[0];

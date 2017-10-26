@@ -1,22 +1,23 @@
 export default function getWinner(board) {
   // Check if someone won
   var vals = [true, false];
+  var numRows = board.length;
   var allNotNull = true;
   for (var k = 0; k < vals.length; k++) {
       var value = vals[k];
       
       var diagonalComplete1 = true;
       var diagonalComplete2 = true;
-      for (var i = 0; i < 3; i++) {
+      for (var i = 0; i < numRows; i++) {
           if (board[i][i] !== value) {
               diagonalComplete1 = false;
           }
-          if (board[2 - i][i] !== value) {
+          if (board[(numRows-1) - i][i] !== value) {
               diagonalComplete2 = false;
           }
           var rowComplete = true;
           var colComplete = true;
-          for (var j = 0; j < 3; j++) {
+          for (var j = 0; j < numRows; j++) {
               if (board[i][j] !== value) {
                   rowComplete = false;
               }

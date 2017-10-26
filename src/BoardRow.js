@@ -1,11 +1,12 @@
 import React from 'react';
+import BoardCell from './BoardCell.js';
 
-const BoardRow = ({row, col, marking, onClick}) => {
-  let id = "c" + row + col;
+const BoardRow = ({onClick, row, rowNum}) => {
   return (
-    // onClick={onClick} after fixing the bug on minmax react
-    <td><button className="place" id={id}>{marking === true ? "o" : marking === false ? "x": null}</button></td>
-  )
-};
+    <tr>
+      {row.map((cell, colNum) => <BoardCell rowNum={rowNum} colNum={colNum} onClick={onClick} marking={cell} key={colNum} />)}
+    </tr>
+  );
+}
 
 export default BoardRow;
